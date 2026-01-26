@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PluginManifest } from "@/lib/plugins/types";
 import { usePluginManager } from "@/lib/plugins/usePluginManager";
 import { Menu, Package } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface AppConfig {
   app: {
@@ -38,6 +38,7 @@ export default function Home() {
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const mapRef = useRef<any>(null);
   
   const { plugins, registerPlugin, togglePlugin, handlePluginMessage } = usePluginManager();
 
@@ -56,6 +57,20 @@ export default function Home() {
         setLoading(false);
       });
   }, [registerPlugin]);
+
+  const handleMenuItemClick = (itemId: string, action: string) => {
+    console.log(`Menu item clicked: ${itemId}, action: ${action}`);
+    
+    if (itemId === 'layers') {
+      // Trigger layers control to open
+      setTimeout(() => {
+        const layersControl = document.querySelector('.leaflet-control-layers-toggle') as HTMLElement;
+        if (layersControl) {
+          layersControl.click();
+        }
+      }, 400); // Wait for drawer to close
+    }
+  };
 
   if (loading) {
     return (
@@ -80,7 +95,12 @@ export default function Home() {
     <div className="relative h-screen w-screen overflow-hidden bg-background">
       {/* Map Layer (Background) */}
       <div className="absolute inset-0 z-0">
-        <MapView config={config.map} />
+        <MapView 
+          config={config.map}
+          onMapReady={(map) => {
+            mapRef.current = map;
+          }}
+        />
       </div>
 
       {/* Plugin Layer (Overlays) */}
@@ -146,6 +166,7 @@ export default function Home() {
         onClose={() => setIsDrawerOpen(false)} 
         menuItems={config.menu.items}
         title={config.app.name.toUpperCase()}
+        onMenuItemClick={handleMenuItemClick}
       />
     </div>
   );

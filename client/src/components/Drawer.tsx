@@ -48,30 +48,8 @@ export default function Drawer({
       onMenuItemClick(item.id, item.action);
     }
     
-    // Execute default actions based on item ID
-    switch (item.id) {
-      case 'plugins':
-        console.log('Opening plugins...');
-        // Future: open plugins panel
-        break;
-      case 'layers':
-        console.log('Opening layers control...');
-        // Trigger layers control visibility
-        const layersControl = document.querySelector('.leaflet-control-layers');
-        if (layersControl) {
-          (layersControl as HTMLElement).click();
-        }
-        break;
-      case 'settings':
-        console.log('Opening settings...');
-        // Future: open settings panel
-        break;
-      default:
-        console.log(`Unknown action: ${item.action}`);
-    }
-    
     // Close drawer after action
-    setTimeout(() => onClose(), 300);
+    onClose();
   };
 
   return (
