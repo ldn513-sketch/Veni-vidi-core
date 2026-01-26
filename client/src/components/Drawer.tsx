@@ -16,6 +16,7 @@ interface DrawerProps {
   onClose: () => void;
   menuItems: MenuItem[];
   title?: string;
+  onMenuItemClick?: (itemId: string, action: string) => void;
 }
 
 const iconMap: Record<string, any> = {
@@ -24,7 +25,13 @@ const iconMap: Record<string, any> = {
   Settings,
 };
 
-export default function Drawer({ isOpen, onClose, menuItems, title = "SYSTEM MENU" }: DrawerProps) {
+export default function Drawer({ 
+  isOpen, 
+  onClose, 
+  menuItems, 
+  title = "SYSTEM MENU",
+  onMenuItemClick 
+}: DrawerProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -32,6 +39,40 @@ export default function Drawer({ isOpen, onClose, menuItems, title = "SYSTEM MEN
   }, []);
 
   if (!mounted) return null;
+
+  const handleItemClick = (item: MenuItem) => {
+    console.log(`Action: ${item.action}`);
+    
+    // Call parent callback if provided
+    if (onMenuItemClick) {
+      onMenuItemClick(item.id, item.action);
+    }
+    
+    // Execute default actions based on item ID
+    switch (item.id) {
+      case 'plugins':
+        console.log('Opening plugins...');
+        // Future: open plugins panel
+        break;
+      case 'layers':
+        console.log('Opening layers control...');
+        // Trigger layers control visibility
+        const layersControl = document.querySelector('.leaflet-control-layers');
+        if (layersControl) {
+          (layersControl as HTMLElement).click();
+        }
+        break;
+      case 'settings':
+        console.log('Opening settings...');
+        // Future: open settings panel
+        break;
+      default:
+        console.log(`Unknown action: ${item.action}`);
+    }
+    
+    // Close drawer after action
+    setTimeout(() => onClose(), 300);
+  };
 
   return (
     <>
@@ -79,7 +120,7 @@ export default function Drawer({ isOpen, onClose, menuItems, title = "SYSTEM MEN
                   key={item.id}
                   variant="ghost"
                   className="w-full justify-start gap-3 h-12 text-base font-mono tracking-tight hover:bg-primary/10 hover:text-primary rounded-none border-l-2 border-transparent hover:border-primary transition-all"
-                  onClick={() => console.log(`Action: ${item.action}`)}
+                  onClick={() => handleItemClick(item)}
                 >
                   <Icon className="h-5 w-5 opacity-70" />
                   {item.label}
@@ -93,7 +134,7 @@ export default function Drawer({ isOpen, onClose, menuItems, title = "SYSTEM MEN
         <div className="p-4 border-t border-primary/20 bg-black/20 text-xs font-mono text-muted-foreground">
           <div className="flex justify-between items-center">
             <span>STATUS: ONLINE</span>
-            <span className="text-primary">V 1.0.0</span>
+            <span className="text-primary">V 2.0.0</span>
           </div>
           <div className="mt-2 h-1 w-full bg-muted/20 rounded-full overflow-hidden">
             <div className="h-full bg-primary/50 w-[60%] animate-pulse" />

@@ -61,7 +61,7 @@ function GeolocationButton() {
     <button
       onClick={handleGeolocate}
       disabled={loading}
-      className="leaflet-control leaflet-bar absolute bottom-24 right-2 z-[1000] bg-background/90 backdrop-blur-md border border-primary/50 hover:bg-primary/20 transition-colors rounded-sm shadow-lg p-2 disabled:opacity-50"
+      className="leaflet-control leaflet-bar absolute bottom-24 right-2 z-[2000] bg-background/90 backdrop-blur-md border border-primary/50 hover:bg-primary/20 transition-colors rounded-sm shadow-lg p-3 disabled:opacity-50"
       title="Recentrer sur ma position"
     >
       <Crosshair 
