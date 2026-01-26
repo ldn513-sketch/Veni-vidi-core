@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "Veni Vidi Core",
+    "version": "1.0.0",
+    "theme": "cyber-tactical"
+  },
+  "map": {
+    "center": [48.4539, -2.0476],
+    "zoom": 13,
+    "minZoom": 10,
+    "maxZoom": 18,
+    "tileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"
+  },
+  "menu": {
+    "items": [
+      {
+        "id": "plugins",
+        "label": "Plugins",
+        "icon": "Package",
+        "action": "togglePlugins"
+      },
+      {
+        "id": "layers",
+        "label": "Calques",
+        "icon": "Layers",
+        "action": "toggleLayers"
+      },
+      {
+        "id": "settings",
+        "label": "Paramètres",
+        "icon": "Settings",
+        "action": "openSettings"
+      }
+    ]
+  },
+  "plugins": {
+    "registry": [
+      {
+        "id": "demo-plugin-01",
+        "name": "System Demo",
+        "version": "0.1.0",
+        "description": "A simple demonstration plugin",
+        "permissions": ["ui.toast", "map.write"],
+        "entryPoint": "/plugins/demo/index.html"
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Plugin</title>
+    <style>
+        body {
+            background: rgba(0, 20, 0, 0.8);
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+            margin: 0;
+            border: 1px solid #0f0;
+            height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px;
+            font-family: monospace;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #fff;
+        }
+        .log {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <h3>PLUGIN: DEMO_01</h3>
+    <div class="log">STATUS: CONNECTED</div>
+    
+    <button onclick="sendToast()">TEST COMM (TOAST)</button>
+    <button onclick="addMarker()">ADD MARKER (DINAN)</button>
+
+    <script>
+        // Simple Plugin SDK shim
+        const API = {
+            send: (type, payload) => {
+                window.parent.postMessage({ type, payload }, '*');
+            }
+        };
+
+        function sendToast() {
+            API.send('UI_SHOW_TOAST', { message: 'Hello from Plugin Space!' });
+        }
+
+        function addMarker() {
+            API.send('MAP_ADD_MARKER', { 
+                lat: 48.4539, 
+                lng: -2.0476, 
+                title: 'Plugin Marker' 
+            });
+        }
+
+        window.addEventListener('message', (event) => {
+            console.log('[Plugin] Received:', event.data);
+            if (event.data.type === 'LIFECYCLE_INIT') {
+                document.querySelector('.log').innerText += '\nINIT RECEIVED';
+            }
+        });
+    </script>
+</body>
+</html>

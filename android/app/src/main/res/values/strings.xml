@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Veni Vidi Core</string>
+    <string name="title_activity_main">Veni Vidi Core</string>
+    <string name="package_name">com.venividi.core</string>
+    <string name="custom_url_scheme">com.venividi.core</string>
+</resources>
